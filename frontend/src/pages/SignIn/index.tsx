@@ -1,5 +1,5 @@
 import React, { FC, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
@@ -25,9 +25,8 @@ interface SignInFormData {
 const SignIn: FC = () => {
   const { signIn, user } = useAuth();
   const { addToast } = useToast();
+  const history = useHistory();
   const formRef = useRef<FormHandles>(null);
-
-  console.log(user);
 
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
@@ -46,6 +45,8 @@ const SignIn: FC = () => {
         });
 
         await signIn({ email: data.email, password: data.password });
+
+        history.push('/dashboard');
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
           console.log(error);
@@ -57,8 +58,7 @@ const SignIn: FC = () => {
         addToast({
           type: 'error',
           title: 'Autenticação',
-          description:
-            'Não foi possível fazer login. Verifique suas credenciais',
+          description: 'Não foi possível fazer login. Verifique suas credenciais',
         });
       }
     },
@@ -76,12 +76,7 @@ const SignIn: FC = () => {
 
             <Input name="email" icon={FiMail} placeholder="E-mail" />
 
-            <Input
-              name="password"
-              icon={FiLock}
-              type="password"
-              placeholder="Senha"
-            />
+            <Input name="password" icon={FiLock} type="password" placeholder="Senha" />
 
             <Button type="submit">Entrar</Button>
 

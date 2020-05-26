@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useState, useContext, FC } from 'react'
+import React, { createContext, useCallback, useState, useContext, FC } from 'react';
 import api from '../services/api';
 
 interface CredentialsProps {
@@ -32,7 +32,7 @@ const AuthProvider: FC = ({ children }) => {
   const signIn = useCallback(async ({ email, password }) => {
     const response = await api.post('sessions', {
       email,
-      password
+      password,
     });
 
     const { user, token } = response.data;
@@ -41,7 +41,6 @@ const AuthProvider: FC = ({ children }) => {
 
     localStorage.setItem('@GoBarber:token', token);
     localStorage.setItem('@GoBarber:user', JSON.stringify(user));
-
   }, []);
 
   const signOut = useCallback(() => {
@@ -49,29 +48,25 @@ const AuthProvider: FC = ({ children }) => {
     localStorage.removeItem('@GoBarber:user');
 
     setSignInData({} as SignInData);
-  }, [])
+  }, []);
 
   const providerValue = {
     user: signInData.user,
     signIn,
     signOut,
-  }
+  };
 
-  return (
-    <AuthContext.Provider value={providerValue}>
-      {children}
-    </AuthContext.Provider>
-  )
-}
+  return <AuthContext.Provider value={providerValue}>{children}</AuthContext.Provider>;
+};
 
 function useAuth(): AuthContextProps {
   const context = useContext(AuthContext);
 
-  if(!context) {
+  if (!context) {
     throw new Error('useAuth must be used whithin an AuthProvider');
   }
 
   return context;
 }
 
-export { AuthProvider, useAuth};
+export { AuthProvider, useAuth };
