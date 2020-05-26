@@ -10,8 +10,9 @@ import React, {
 import { useField } from '@unform/core';
 
 import { IconBaseProps } from 'react-icons';
+import { FiAlertCircle } from 'react-icons/fi';
 
-import { Container } from './styles';
+import { Container, Error } from './styles';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string; // torna a prop name obrigatória para o nosso input
@@ -36,7 +37,7 @@ const Input: FC<InputProps> = ({ name, icon: Icon, ...props }) => {
   }, [fieldName, registerField]);
 
   return (
-    <Container isFilled={isFilled}>
+    <Container hasError={!!error} isFilled={isFilled}>
       {Icon && <Icon size={20} />}
 
       <input
@@ -46,7 +47,11 @@ const Input: FC<InputProps> = ({ name, icon: Icon, ...props }) => {
         {...props}
       />
 
-      {error}
+      {error && (
+        <Error title={error}>
+          <FiAlertCircle color="#c53030" size={20} />
+        </Error>
+      )}
     </Container>
   );
 };
