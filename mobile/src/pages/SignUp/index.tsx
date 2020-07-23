@@ -39,43 +39,46 @@ const SignIn: FC = () => {
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
 
-  const handleSignUp = useCallback(async (data: SignUpData) => {
-    try {
-      // eslint-disable-next-line no-unused-expressions
-      formRef.current?.setErrors({});
-
-      const schema = Yup.object().shape({
-        name: Yup.string().required('Nome obrigatório'),
-        email: Yup.string()
-          .required('E-mail obrigatório')
-          .email('Digite um e-mail válido'),
-        password: Yup.string().min(8, 'Senha deve ter no mínimo 8 dígitos'),
-      });
-
-      await schema.validate(data, {
-        abortEarly: false,
-      });
-
-      // await api.post('/users', data);
-
-      Alert.alert('Cadastro realizado', 'Você já pode fazer login');
-
-      navigation.goBack();
-    } catch (error) {
-      if (error instanceof Yup.ValidationError) {
-        console.log(error);
-        const validations = validationErrors(error);
+  const handleSignUp = useCallback(
+    async (data: SignUpData) => {
+      try {
         // eslint-disable-next-line no-unused-expressions
-        formRef.current?.setErrors(validations);
-        return;
-      }
+        formRef.current?.setErrors({});
 
-      Alert.alert(
-        'Autenticação',
-        'Não foi possível fazer o cadastro. Tente novamente mais tarde.',
-      );
-    }
-  }, []);
+        const schema = Yup.object().shape({
+          name: Yup.string().required('Nome obrigatório'),
+          email: Yup.string()
+            .required('E-mail obrigatório')
+            .email('Digite um e-mail válido'),
+          password: Yup.string().min(8, 'Senha deve ter no mínimo 8 dígitos'),
+        });
+
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+
+        // await api.post('/users', data);
+
+        Alert.alert('Cadastro realizado', 'Você já pode fazer login');
+
+        navigation.goBack();
+      } catch (error) {
+        if (error instanceof Yup.ValidationError) {
+          console.log(error);
+          const validations = validationErrors(error);
+          // eslint-disable-next-line no-unused-expressions
+          formRef.current?.setErrors(validations);
+          return;
+        }
+
+        Alert.alert(
+          'Autenticação',
+          'Não foi possível fazer o cadastro. Tente novamente mais tarde.',
+        );
+      }
+    },
+    [navigation],
+  );
 
   return (
     <>
