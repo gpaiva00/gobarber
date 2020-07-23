@@ -58,13 +58,9 @@ const SignIn: FC = () => {
 
       // await api.post('/users', data);
 
-      // addToast({
-      //   type: 'success',
-      //   title: 'Cadastro realizado',
-      //   description: 'Agora você pode fazer login no GoBarber!',
-      // });
+      Alert.alert('Cadastro realizado', 'Você já pode fazer login');
 
-      // history.push('/');
+      navigation.goBack();
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         console.log(error);
