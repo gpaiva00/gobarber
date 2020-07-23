@@ -29,6 +29,7 @@
         "prettier"
     ],
     "rules": {
+      "react/jsx-props-no-spreading": "warn",
       "prettier/prettier": "error",
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
