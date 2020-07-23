@@ -1,6 +1,8 @@
 import React, {
+  useState,
   useEffect,
   useRef,
+  useCallback,
   useImperativeHandle,
   RefForwardingComponent,
   forwardRef,
@@ -32,6 +34,18 @@ const Input: RefForwardingComponent<InputRefProps, InputProps> = (
   const inputElementRef = useRef<any>(null);
   const inputValueRef = useRef<InputValueProps>({ value: defaultValue });
 
+  const [isFocused, setIsFocused] = useState(false);
+  const [isFilled, setIsFilled] = useState(false);
+
+  const handleInputFocus = useCallback(() => {
+    setIsFocused(true);
+  }, []);
+
+  const handleInputBlur = useCallback(() => {
+    setIsFocused(false);
+    setIsFilled(!!inputValueRef.current.value);
+  }, []);
+
   // componente interno tenta modificar o componente pai através da ref
   useImperativeHandle(ref, () => ({
     focus() {
@@ -56,13 +70,19 @@ const Input: RefForwardingComponent<InputRefProps, InputProps> = (
   }, [fieldName, registerField]);
 
   return (
-    <Container>
-      <Icon name={icon} size={20} color="#666360" />
+    <Container isFocused={isFocused}>
+      <Icon
+        name={icon}
+        size={20}
+        color={isFocused || isFilled ? '#ff9000' : '#666360'}
+      />
 
       <TextInput
         ref={inputElementRef}
         keyboardAppearance="dark"
         placeholderTextColor="#666360"
+        onFocus={handleInputFocus}
+        onBlur={handleInputBlur}
         onChangeText={value => {
           inputValueRef.current.value = value;
         }}

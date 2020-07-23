@@ -64,9 +64,7 @@ const SignIn: FC = () => {
                 autoCapitalize="none"
                 keyboardType="email-address"
                 returnKeyType="next"
-                onSubmitEditing={() => {
-                  passwordInputRef.current.focus();
-                }}
+                onSubmitEditing={() => passwordInputRef.current?.focus()}
               />
               <Input
                 ref={passwordInputRef}
@@ -75,16 +73,10 @@ const SignIn: FC = () => {
                 placeholder="Senha"
                 secureTextEntry
                 returnKeyType="send"
-                onSubmitEditing={() => {
-                  formRef.current?.submitForm();
-                }}
+                onSubmitEditing={() => formRef.current?.submitForm()}
               />
             </Form>
-            <Button
-              onPress={() => {
-                formRef.current?.submitForm();
-              }}
-            >
+            <Button onPress={() => formRef.current?.submitForm()}>
               Entrar
             </Button>
 
