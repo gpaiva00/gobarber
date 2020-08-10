@@ -7,9 +7,9 @@ import cors from 'cors';
 import routes from './routes';
 import uploadConfig from './config/upload';
 
-import AppError from './errors/AppError';
+import AppError from './shared/errors/AppError';
 
-import './database';
+import './shared/database';
 /**
  * importei o ts-node-dev
  * Ele faz o papel do tsc que converte typescript para javascript

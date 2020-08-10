@@ -7,7 +7,7 @@ import React, {
   FC,
 } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
-import api from '../services/api';
+// import api from '../services/api';
 
 interface CredentialsProps {
   email: string;
@@ -16,6 +16,7 @@ interface CredentialsProps {
 
 interface AuthContextProps {
   user: object;
+  loading: boolean;
   signIn(credentials: CredentialsProps): Promise<void>;
   signOut(): void;
 }
@@ -29,6 +30,7 @@ const AuthContext = createContext({} as AuthContextProps);
 
 const AuthProvider: FC = ({ children }) => {
   const [signInData, setSignInData] = useState<SignInData>({} as SignInData);
+  const [loading, setLoading] = useState(true);
 
   const signIn = useCallback(async ({ email, password }) => {
     // const response = await api.post('sessions', {
@@ -56,6 +58,7 @@ const AuthProvider: FC = ({ children }) => {
 
   const providerValue = {
     user: signInData.user,
+    loading,
     signIn,
     signOut,
   };
@@ -67,7 +70,10 @@ const AuthProvider: FC = ({ children }) => {
         '@GoBarber:user',
       ]);
 
-      if (token && user) setSignInData({ token, user: JSON.parse(user) });
+      if (token && user) {
+        setSignInData({ token, user: JSON.parse(user) });
+        setLoading(false);
+      }
     }
 
     loadStorageData();
