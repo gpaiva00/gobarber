@@ -8,7 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-import User from '../../users/entities/User';
+import User from '../../../../users/infra/typeorm/entities/User';
 
 // entity é uma funcao e com os decorators podemos chama-la e passar como parametro a nossa classe
 @Entity('appointments')

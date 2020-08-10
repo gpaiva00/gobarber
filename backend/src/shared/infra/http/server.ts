@@ -5,11 +5,11 @@ import 'express-async-errors';
 import cors from 'cors';
 
 import routes from './routes';
-import uploadConfig from './config/upload';
+import uploadConfig from '../../../config/upload';
 
-import AppError from './shared/errors/AppError';
+import AppError from '../../errors/AppError';
 
-import './shared/database';
+import '../typeorm';
 /**
  * importei o ts-node-dev
  * Ele faz o papel do tsc que converte typescript para javascript

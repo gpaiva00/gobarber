@@ -3,10 +3,10 @@ import { Router } from 'express';
 // startOfHour: pega uma data e coloca o minuto como 0, e segundos como 0 (pega só a hora)
 import { parseISO } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
-import AppointmentsRepository from '../modules/appointments/repositories/AppointmentsRepository';
-import CreateAppointmentsService from '../modules/appointments/services/CreateAppointmentService';
+import AppointmentsRepository from '../../../../modules/appointments/repositories/AppointmentsRepository';
+import CreateAppointmentsService from '../../../../modules/appointments/services/CreateAppointmentService';
 
-import ensureAuthenticated from '../shared/middlewares/ensureAuthenticated';
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const appointmentsRouter = Router();
 

@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from 'typeorm';
-import Appointment from '../entities/Appointment';
+import Appointment from '../infra/typeorm/entities/Appointment';
 /** arquivo responsavel por tudo que vai mexer nos agendamentos da nossa aplicaçµao
  * ler, alterar, deletar, buscar, criar
  * Como sendo o detendor das operacoes de Agendamento, em cima dos dados da nossa aplicacao
