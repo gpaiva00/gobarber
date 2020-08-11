@@ -1,9 +1,9 @@
 import { startOfHour } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
+import AppError from '@shared/errors/AppError';
 import Appointment from '../infra/typeorm/entities/Appointment';
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
 
-import AppError from '../../../shared/errors/AppError';
 /**
  * Aqui usamos a mesma interface do repository e do Model
  * Mas tentar criar uma unica interface para os 3 arquivos pode atrapalhar
