@@ -2,8 +2,7 @@ import { Router } from 'express';
 // parseISo converte uma data em string para um formato date do JS (Date)
 // startOfHour: pega uma data e coloca o minuto como 0, e segundos como 0 (pega só a hora)
 import { parseISO } from 'date-fns';
-import { getCustomRepository } from 'typeorm';
-import AppointmentsRepository from '@modules/appointments/repositories/AppointmentsRepository';
+import AppointmentsRepository from '@modules/appointments/infra/typeorm/repositories/AppointmentsRepository';
 import CreateAppointmentsService from '@modules/appointments/services/CreateAppointmentService';
 
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
@@ -37,12 +36,11 @@ appointmentsRouter.use(ensureAuthenticated);
  * o Servico deve ter uma unica e exclusiva funcionalidade
  */
 
-appointmentsRouter.get('/', async (req, res) => {
-  const appointmentsRepository = getCustomRepository(AppointmentsRepository);
-  const appointments = await appointmentsRepository.find();
+// appointmentsRouter.get('/', async (req, res) => {
+//   const appointments = await appointmentsRepository.find();
 
-  return res.json(appointments);
-});
+//   return res.json(appointments);
+// });
 
 appointmentsRouter.post('/', async (req, res) => {
   const { provider_id, date } = req.body;
@@ -50,7 +48,10 @@ appointmentsRouter.post('/', async (req, res) => {
   // O ts já identifica o tipo dessa variável parsedDate como Date
   const parsedDate = parseISO(date);
 
-  const CreateAppointmentService = new CreateAppointmentsService();
+  const appointmentsRepository = new AppointmentsRepository();
+  const CreateAppointmentService = new CreateAppointmentsService(
+    appointmentsRepository,
+  );
 
   const appointment = await CreateAppointmentService.execute({
     provider_id,

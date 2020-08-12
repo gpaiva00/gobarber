@@ -1,8 +1,11 @@
 import { startOfHour } from 'date-fns';
-import { getCustomRepository } from 'typeorm';
 import AppError from '@shared/errors/AppError';
 import Appointment from '../infra/typeorm/entities/Appointment';
-import AppointmentsRepository from '../repositories/AppointmentsRepository';
+import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
+/**
+ * O service não precisa saber se estamos usando typeorm ou mongoose
+ * Precisamos tirar essa responsabilidade dele
+ */
 
 /**
  * Aqui usamos a mesma interface do repository e do Model
@@ -11,7 +14,7 @@ import AppointmentsRepository from '../repositories/AppointmentsRepository';
  * "Tentar otimizar, refatorar demais prematuramente pode atrapalhar lá na frente"
  * Nem sempre é ruim repetir código.
  */
-interface Request {
+interface IRequest {
   provider_id: string;
   date: Date;
 }
@@ -33,11 +36,13 @@ class CreateAppointmentService {
    * Trata erros/excessões
    * Acesso ao repositorio
    */
-  public async execute({ date, provider_id }: Request): Promise<Appointment> {
-    const appointmentDate = startOfHour(date);
-    const appointmentsRepository = getCustomRepository(AppointmentsRepository);
 
-    const findAppointmentInSameDate = await appointmentsRepository.findByDate(
+  constructor(private appointmentsRepository: IAppointmentsRepository) {}
+
+  public async execute({ date, provider_id }: IRequest): Promise<Appointment> {
+    const appointmentDate = startOfHour(date);
+
+    const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
       appointmentDate,
     );
 
@@ -50,12 +55,10 @@ class CreateAppointmentService {
      * Se passar cada argumento separado por virgula (não nomeado)
      * Ele daria apenas o erro de "tem algum parametro faltando"
      */
-    const appointment = appointmentsRepository.create({
+    const appointment = await this.appointmentsRepository.create({
       provider_id,
       date: appointmentDate,
     });
-
-    await appointmentsRepository.save(appointment);
 
     return appointment;
   }

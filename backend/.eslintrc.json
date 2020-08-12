@@ -26,6 +26,10 @@
   "rules": {
     // sempre que tiver um erro em alguma regra do prettier ele vai mostrar no arquivo
     "prettier/prettier": "error",
+    "no-useless-constructor": "off",
+    "@typescript-eslint/interface-name-prefix": ["error", {
+      "prefixWithI": "always"
+    }],
     "class-methods-use-this": "off",
     "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/no-unused-vars": [
